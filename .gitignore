@@ -18,3 +18,4 @@ lib/
 __pycache__/
 *.py[cod]
 *.class
+package-lock.json

@@ -17,31 +17,31 @@ import {
 } from './ducks/token'
 
 interface StateProps {
-    tokenA: string,
-    tokenB: string,
-    activeToken: string
+    tokenA?: string,
+    tokenB?: string,
+    activeToken?: string
 }
      
 interface DispatchProps { 
-    setTokenA: (token: string) => void,
-    setTokenB: (token: string) => void,
-    setActiveToken: (token: string) => void
+    setTokenA?: (token: string) => void,
+    setTokenB?: (token: string) => void,
+    setActiveToken?: (token: string) => void
 }
 
 interface ArgProps {
-    onTokenSet: (token: string) => void
-    argToken: string
+    onTokenSet?: (token: string) => void
+    argToken?: string
 }
  
 type Props = StateProps & DispatchProps & ArgProps
 
 
-const PasswordSelector: React.SFC<Props> = (props) => {
+const PasswordSelector: React.FC<Props> = (props) => {
     
     //console.log("PasswordSelector");
     //console.log(props.argToken);
     
-    return props.argToken === undefined ? <div className="jp-Frame">
+    return props.argToken === undefined ? <div>
         <h2>Set a password</h2>
         <table className="jp-PasswordTable"><tbody>
             <tr>
@@ -81,7 +81,7 @@ const PasswordSelector: React.SFC<Props> = (props) => {
             </tr>
         </tbody></table>
         
-    </div> : <div className="jp-Frame">
+    </div> : <div >
         <h2>Login</h2>
         <table className="jp-PasswordTable"><tbody>
             <tr>
@@ -143,5 +143,5 @@ function mapDispatchToProps(dispatch: Redux.Dispatch<any>, props: Props): Dispat
    
 }
   
-export default connect<StateProps, DispatchProps, ArgProps>
+export default connect
   (mapStateToProps, mapDispatchToProps)(PasswordSelector)

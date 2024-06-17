@@ -1,7 +1,7 @@
 
 import {
     PanelLayout, Widget
-} from '@phosphor/widgets';
+} from '@lumino/widgets';
 
 import { 
     Toolbar, ToolbarButton 
@@ -17,8 +17,14 @@ export class CredentialsPanel extends Widget {
     
     private div: HTMLElement;
     private toolbar: Toolbar<Widget>;
-    readonly serviceManager: ServiceManager;
-    readonly id: string;
+    readonly serviceManager: ServiceManager.IManager;
+    private _id: string;
+    public get id(): string {
+        return this._id;
+    }
+    public set id(value: string) {
+        this._id = value;
+    }
     public onAddCredential: () => void;
     public onSave: () => void;
     public onLogin: () => void;
@@ -36,7 +42,7 @@ export class CredentialsPanel extends Widget {
         
         this.setSaveListener = this.setSaveListener.bind(this);
         let saveButton = new ToolbarButton({
-            iconClassName: 'jp-SaveIcon jp-Icon jp-Icon-16',
+            // iconClassName: 'jp-SaveIcon jp-Icon jp-Icon-16',
             tooltip: 'Save',
             onClick: () => this.onSave()
         });
@@ -45,7 +51,7 @@ export class CredentialsPanel extends Widget {
         
         this.setAddCredentialListener = this.setAddCredentialListener.bind(this);
         let newCredential = new ToolbarButton({
-            iconClassName: 'jp-AddIcon jp-Icon jp-Icon-16',
+            // iconClassName: 'jp-AddIcon jp-Icon jp-Icon-16',
             tooltip: 'New Credential',
             onClick: () => this.onAddCredential()
         });
@@ -54,7 +60,7 @@ export class CredentialsPanel extends Widget {
         
         this.setLoginListener = this.setLoginListener.bind(this);
         let loginButton = new ToolbarButton({
-            iconClassName: 'jp-KeyIcon jp-Icon jp-Icon-16',
+            // iconClassName: 'jp-KeyIcon jp-Icon jp-Icon-16',
             tooltip: 'Login',
             onClick: () => {
                 this.onLogin();
@@ -70,7 +76,7 @@ export class CredentialsPanel extends Widget {
         
         this.setStopListener = this.setStopListener.bind(this);
         let stopButton = new ToolbarButton({
-            iconClassName: 'jp-StopIcon jp-Icon jp-Icon-16',
+            // iconClassName: 'jp-StopIcon jp-Icon jp-Icon-16',
             tooltip: 'Stop',
             onClick: () => {
                 this.onStop();
@@ -121,7 +127,7 @@ export namespace CredentialsPanel {
         id: string;
       
         // provides access to service, like sessions
-        serviceManager: ServiceManager;
+        serviceManager: ServiceManager.IManager;
         
         
     }

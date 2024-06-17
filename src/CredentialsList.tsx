@@ -2,11 +2,10 @@
 // https://levelup.gitconnected.com/ultimate-react-component-patterns-with-typescript-2-8-82990c516935
 
 declare var require: any
-var CryptoJS = require("crypto-js");
+const CryptoJS = require("crypto-js");
 
 
 import * as React from 'react';
-import * as Redux from 'redux'
 import { connect } from 'react-redux'
 
 import '../style/index.css';
@@ -30,17 +29,18 @@ import {
 
 
 interface StateProps {
-    credentials: Array<ICredential>,
-    lastId: number,
+    credentials?: Array<ICredential>,
+    lastId?: number,
     token?: string
 }
      
 interface DispatchProps { 
-    addCredential: () => void,
-    removeCredential: (id: string) => void,
-    setCredential: (id: string, tag: string, value: string, changed: boolean) => void,
-    setLastId: (lastid: number) => void,
-    setActiveToken: (token: string) => void
+    addCredential?: () => void,
+    removeCredential?: (id: string) => void,
+    setCredential?: (id: string, tag: string, value: string, changed: boolean) => void,
+    setLastId?: (lastid: number) => void,
+    setActiveToken?: (token: string) => void
+
 }
 
 interface ArgProps {
@@ -55,12 +55,14 @@ interface ArgProps {
     onTokenSet: (token: string) => void;
     setOnStopListener: (listener: () => void) => void;
     onRemoveCredential: (tag: string) => void;
+    className: string
+
 }
  
 type Props = StateProps & DispatchProps & ArgProps
 
 
-const CredentialsList: React.SFC<Props> = (props) => {
+const CredentialsList: React.FC<Props> = (props) => {
     
     
     //console.log(props.credentials);
@@ -144,7 +146,7 @@ const CredentialsList: React.SFC<Props> = (props) => {
         <h2>Credential Store</h2>
         <p>You need to log in to set and access your credentials. Please click on the key above...</p>
     </div>
-     
+
 }
 
 function mapStateToProps(state: any, props: Props): StateProps {
@@ -155,7 +157,7 @@ function mapStateToProps(state: any, props: Props): StateProps {
     }
 }
  
-function mapDispatchToProps(dispatch: Redux.Dispatch<any>, props?: Props): DispatchProps {
+function mapDispatchToProps(dispatch: any): DispatchProps {
     return {
         addCredential: () => {
             dispatch(addCredential());
@@ -176,5 +178,5 @@ function mapDispatchToProps(dispatch: Redux.Dispatch<any>, props?: Props): Dispa
    
 }
   
-export default connect<StateProps, DispatchProps, ArgProps>
+export default connect
   (mapStateToProps, mapDispatchToProps)(CredentialsList)

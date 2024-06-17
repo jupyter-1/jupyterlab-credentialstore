@@ -5,12 +5,13 @@ var CryptoJS = require("crypto-js");
 
 import {
     Widget
-} from '@phosphor/widgets';
+} from '@lumino/widgets';
 
 import { Message } from '@phosphor/messaging';
 import { ServiceManager } from '@jupyterlab/services';
-import { ClientSession, IClientSession } from '@jupyterlab/apputils';
-import { Kernel, KernelMessage } from '@jupyterlab/services';
+// TODO
+// import { ClientSession } from '@jupyterlab/apputils';
+import {  KernelMessage } from '@jupyterlab/services';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -227,8 +228,8 @@ export class CredentialsWidget extends Widget {
     private token: string;
     private unencrypted_token: string;
     
-    private serviceManager: ServiceManager;
-    private clientSession: ClientSession;
+    private serviceManager: ServiceManager.IManager;
+    // private clientSession: ClientSession;
     private mainpath: string;
     
     constructor(options: CredentialsWidget.IOptions) {
@@ -267,18 +268,18 @@ export class CredentialsWidget extends Widget {
         
         this.removeCredential = this.removeCredential.bind(this);
         
-        this.clientSession = new ClientSession({
-                manager: this.serviceManager.sessions,
-                kernelPreference: {
-                    name: "python3",
-                    shouldStart: true,
-                    canStart: true,
-                    autoStartDefault: true
-                }
-        });
+        // this.clientSession = new ClientSession({
+        //         manager: this.serviceManager.sessions,
+        //         kernelPreference: {
+        //             name: "python3",
+        //             shouldStart: true,
+        //             canStart: true,
+        //             autoStartDefault: true
+        //         }
+        // });
 
-        this.clientSession.initialize().then(() => {
-            let kernel_id = this.clientSession.kernel.id;
+        // this.clientSession.initialize().then(() => {
+        //     let kernel_id = this.clientSession.kernel.id;
             let code = `import os, sys
 from pathlib import Path
 from sys import path
@@ -348,19 +349,19 @@ def get_credential(tag):
                 user_expressions: userExpressions
             };
 
-            let future = this.clientSession.kernel.requestExecute(content, false, {});
+            // let future = this.clientSession.kernel.requestExecute(content, false, {});
             
         
-            future.done.then(msg => {
-                console.log(msg);
-            
-                this.mainpath = msg['content']['user_expressions']['output']['data']['text/plain'];
-                
-                this.clientSession.shutdown();
-                this.clientSession = undefined;
-            });
+            // future.done.then(msg => {
+            //     console.log(msg);
+            //
+            //     this.mainpath = msg['content']['user_expressions']['output']['data']['text/plain'];
+            //
+            //     this.clientSession.shutdown();
+            //     this.clientSession = undefined;
+            // });
 
-        });
+        // });
         
     }
     
@@ -408,36 +409,36 @@ def get_credential(tag):
         //console.log("login");
         
          
-            this.clientSession = new ClientSession({
-                manager: this.serviceManager.sessions,
-                kernelPreference: {
-                    name: "python3",
-                    shouldStart: true,
-                    canStart: true,
-                    autoStartDefault: true
-                }
-            });
-
-            this.clientSession.initialize().then(() => {
-                this.load(this.unencrypted_token);
-
-            });
+            // this.clientSession = new ClientSession({
+            //     manager: this.serviceManager.sessions,
+            //     kernelPreference: {
+            //         name: "python3",
+            //         shouldStart: true,
+            //         canStart: true,
+            //         autoStartDefault: true
+            //     }
+            // });
+            //
+            // this.clientSession.initialize().then(() => {
+            //     this.load(this.unencrypted_token);
+            //
+            // });
         
     }
     
     load(token: string) {
-        pyWriteFile(
-                    this.clientSession, 
-                    token,
-                    this.getLastId(),
-                    undefined,
-                    (lastId, credentials) => {
-                        this.setCredentialsList(credentials);
-                        this.setLastId(lastId);
-                    },
-                    this.setToken,
-                    this.mainpath
-                );
+        // pyWriteFile(
+        //             this.clientSession,
+        //             token,
+        //             this.getLastId(),
+        //             undefined,
+        //             (lastId, credentials) => {
+        //                 this.setCredentialsList(credentials);
+        //                 this.setLastId(lastId);
+        //             },
+        //             this.setToken,
+        //             this.mainpath
+        //         );
 
                 
     }
@@ -450,28 +451,28 @@ def get_credential(tag):
         
         this.onStop();
         
-        if (this.clientSession !== undefined) {
-            this.clientSession.shutdown();
-            this.clientSession = undefined;
-            
-            this.render(()=> {
-                ;
-            });
-        }
+        // if (this.clientSession !== undefined) {
+        //     this.clientSession.shutdown();
+        //     this.clientSession = undefined;
+        //
+        //     this.render(()=> {
+        //
+        //     });
+        // }
     }
     
     save() {
         //console.log("save");
-        pyWriteFile(
-            this.clientSession,
-            this.unencrypted_token,
-            this.getLastId(),
-            this.getCredentialList(),
-            undefined,
-            this.setToken,
-            this.mainpath
-        );
-        
+        // pyWriteFile(
+        //     this.clientSession,
+        //     this.unencrypted_token,
+        //     this.getLastId(),
+        //     this.getCredentialList(),
+        //     undefined,
+        //     this.setToken,
+        //     this.mainpath
+        // );
+        //
         this.onSaved();
         
     }
@@ -479,20 +480,20 @@ def get_credential(tag):
     removeCredential(tag: string) {
         //console.log("remove: "+tag);
     
-        if (this.clientSession !== undefined) {
-            let kernel_id = this.clientSession.kernel.id;
-            let code = `exec("%s = None" % ("`+tag+`"))`;
-            //console.log(code);
-            let content: KernelMessage.IExecuteRequestMsg['content'] = {
-                code: code,
-                stop_on_error: true
-            };
-
-            let future = this.clientSession.kernel.requestExecute(content, false, {});
-            future.done.then(msg => {
-                //console.log(msg);
-            });
-        };
+        // if (this.clientSession !== undefined) {
+        //     let kernel_id = this.clientSession.kernel.id;
+        //     let code = `exec("%s = None" % ("`+tag+`"))`;
+        //     //console.log(code);
+        //     let content: KernelMessage.IExecuteRequestMsg['content'] = {
+        //         code: code,
+        //         stop_on_error: true
+        //     };
+        //
+        //     let future = this.clientSession.kernel.requestExecute(content, false, {});
+        //     future.done.then(msg => {
+        //         //console.log(msg);
+        //     });
+        // }
     }
     
     
@@ -511,7 +512,7 @@ def get_credential(tag):
                 </div>
                 <CredentialsList className="jp-CredentialsStore"
                         argtoken={this.token}
-                        isConnected={this.clientSession !== undefined}
+                        isConnected={false}
                         setAddCredentialListener={this.setAddCredentialListener}
                         setCredentialListGetter={this.setCredentialListGetter}
                         setSetCredentialsListener={this.setSetCredentialsListener}
@@ -539,7 +540,7 @@ export namespace CredentialsWidget {
  
     export interface IOptions {
         // provides access to service, like sessions
-        serviceManager: ServiceManager;
+        serviceManager: ServiceManager.IManager;
         
         // function called when the user saves the credentials
         setSaveListener: (listener: () => void) => void;

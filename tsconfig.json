@@ -1,17 +1,18 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "noImplicitAny": false,
     "jsx": "react",
     "allowJs": true,
-    "target": "es6",
-    "lib": ["ES6", "DOM"],
+    "target": "ES2018",
+    "lib": ["ES2018", "DOM"],
     "experimentalDecorators": true,
     "noUnusedLocals": false,
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,
     "outDir": "./lib",
-    "strict": true,
+    "strict": false,
     "strictNullChecks": false,
     "types": []
   },
